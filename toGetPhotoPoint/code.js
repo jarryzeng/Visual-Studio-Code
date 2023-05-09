@@ -5,6 +5,7 @@ let photos_left = photos.offsetLeft;
 let photos_top = photos.offsetTop;
 
 let get = [];
+let test = "no problem";
 
 photos.addEventListener("mousedown",(event) => {
     let x = event.pageX - photos_left;
