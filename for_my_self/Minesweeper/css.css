@@ -1,0 +1,30 @@
+*{
+    user-select: none;
+}
+body{
+    background: gray;
+}
+#table{
+    border: solid yellow 2px;
+}
+#table tr{
+    line-height: auto;
+    width: auto;
+}
+.block{
+    width: 25px;
+    height: 25px;
+    background: black;
+    text-align: center;
+}
+.boom{
+    background: red;
+}
+.number{
+    background: rgb(80, 80, 80);
+    color: white;
+}
+.mask{
+    background: rgb(168, 113, 50);
+    color: rgb(168, 113, 50);
+}
