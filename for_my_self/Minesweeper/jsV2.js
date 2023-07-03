@@ -1,8 +1,10 @@
 class game{
     constructor(width, height){
         this.grid = [];
+        this.weight = 1.25;
         this.width = width;
         this.height = height;
+        this.blank = "blank";
         this.statusBoom = "boom";
         this.statusMask = "mask";
         this.statusSpace = "space";
@@ -14,7 +16,6 @@ class game{
         this.#makeNumber();
         this.#createMask();
         this.#createEvent();
-        // this.#makeSpaceSerialNumber();
     }
     #createMap(){
         for(let i = 0;i < this.height;i++){
@@ -45,7 +46,7 @@ class game{
             }
             boomSize = document.querySelectorAll(`.${this.statusBoom}`).length;
         }
-        while(boomSize < this.width + this.height);
+        while(boomSize < (this.width + this.height) * this.weight);
     }
     #appendTdNeighbor(){
         for(let i = 0;i < this.height;i++){
@@ -95,6 +96,7 @@ class game{
                 if(this.grid[i][j].leftBottom != undefined && this.grid[i][j].leftBottom.status == this.statusBoom) total += 1;
                 if(this.grid[i][j].rightBottom != undefined && this.grid[i][j].rightBottom.status == this.statusBoom) total += 1;
                 if(total){
+                    this.grid[i][j].status = this.statusNumber;
                     this.grid[i][j].innerHTML = total;
                     this.grid[i][j].classList.add(this.statusNumber);
                     this.grid[i][j].classList.remove(this.statusSpace);
@@ -118,26 +120,11 @@ class game{
                 let boom = document.querySelectorAll(`.${statusBoom}`);
                 for(let i of boom) i.classList.remove(statusMask);
                 alert("Game Over");
-            };
+            }
         }
         for(let i = 0;i < this.height;i++){
             for(let j = 0;j < this.width;j++){
                 this.grid[i][j].onclick = event;
-            }
-        }
-    }
-    #makeSpaceSerialNumber(){
-        for(let i = 0;i < this.height - 1;i++){
-            for(let j = 0;j < this.width - 1;j++){
-                if(this.grid[i][j].status != this.statusSpace);
-                if(this.grid[i][j].up.status != this.statusSpace);
-                if(this.grid[i][j].left.status != this.statusSpace);
-                if(this.grid[i][j].right.status != this.statusSpace);
-                if(this.grid[i][j].bottom.status != this.statusSpace);
-                if(this.grid[i][j].leftUp.status != this.statusSpace);
-                if(this.grid[i][j].rightUp.status != this.statusSpace);
-                if(this.grid[i][j].leftBottom.status != this.statusSpace);
-                if(this.grid[i][j].rightBottom.status != this.statusSpace);
             }
         }
     }
