@@ -1,19 +1,18 @@
 class game{
-    constructor(width, height){
+    constructor(width, height, weight){
         this.grid = [];
-        this.weight = 1.25;
+        this.weight = weight;
         this.width = width;
         this.height = height;
         this.blank = "blank";
+        this.firstOfblock = true;
         this.statusBoom = "boom";
         this.statusMask = "mask";
         this.statusSpace = "space";
         this.statusNumber = "number";
         this.table = document.querySelector("#table");
         this.#createMap();
-        this.#createBoom();
         this.#appendTdNeighbor();
-        this.#makeNumber();
         this.#createMask();
         this.#createEvent();
     }
@@ -27,18 +26,19 @@ class game{
                 td.classList.add(this.statusSpace);
                 this.grid[i].push(td);
                 this.grid[i][j].status = this.statusSpace;
+                this.grid[i][j].position = [i, j];
                 tr.appendChild(td);
             }
             this.table.appendChild(tr);
         }
     }
-    #createBoom(){
+    #createBoom(position){
         let boomSize = 0;
         do{
             let x = Math.floor(Math.random() * this.width);
             let y = Math.floor(Math.random() * this.height);
-            
-            if(this.grid[y][x].classList.contains(this.statusBoom)) continue;
+
+            if(this.grid[y][x].classList.contains(this.statusBoom) || (y == position[0] && x == position[1])) continue;
             else{
                 this.grid[y][x].classList.remove(this.statusSpace);
                 this.grid[y][x].classList.add(this.statusBoom);
@@ -46,7 +46,7 @@ class game{
             }
             boomSize = document.querySelectorAll(`.${this.statusBoom}`).length;
         }
-        while(boomSize < (this.width + this.height) * this.weight);
+        while(boomSize < (this.width * this.height / Math.abs(this.width - this.height)) * this.weight);
     }
     #appendTdNeighbor(){
         for(let i = 0;i < this.height;i++){
@@ -111,23 +111,77 @@ class game{
             }
         }
     }
-    #createEvent(){
-        let event = function(){
-            let statusMask = "mask";
-            let statusBoom = "boom";
-            this.classList.remove(statusMask);
-            if(this.classList.contains(statusBoom)){
-                let boom = document.querySelectorAll(`.${statusBoom}`);
-                for(let i of boom) i.classList.remove(statusMask);
-                alert("Game Over");
-            }
+    static contains(list, object){
+        for(let i of list){
+            if(i == object) return true;
         }
+        return false;
+    }
+    static makeGroup(point){
+        let localUpList = [];
+        let localLeftList = [];
+        let localRightList = [];
+        let localBottomList = [];
+        let check = function(registerPoint, status){
+            if(registerPoint != undefined) return registerPoint.classList.contains(status);
+            else return false;
+        }
+
+        // 若point的class中不包含space則回傳
+        if(!point.classList.contains("space")) return;
+        
+        // 檢查上下左右 是否存在、被遮住且為 number 或 space，如果都為 true 則去除 mask
+        if(point.leftUp != undefined && check(point.leftUp, "mask") && check(point.leftUp, "number")) point.leftUp.classList.remove("mask");
+        if(point.right != undefined && check(point.rightUp, "mask") && check(point.rightUp, "number")) point.rightUp.classList.remove("mask");
+        if(point.up != undefined && check(point.up, "mask") && (check(point.up, "number") || check(point.up, "space"))) point.up.classList.remove("mask");
+        if(point.leftBottom != undefined && check(point.leftBottom, "mask") && check(point.leftBottom, "number")) point.leftBottom.classList.remove("mask");
+        if(point.rightBottom != undefined && check(point.rightBottom, "mask") && check(point.rightBottom, "number")) point.rightBottom.classList.remove("mask");
+        if(point.left != undefined && check(point.left, "mask") && (check(point.left, "number") || check(point.left, "space"))) point.left.classList.remove("mask");
+        if(point.right != undefined && check(point.right, "mask") && (check(point.right, "number") || check(point.right, "space"))) point.right.classList.remove("mask");
+        if(point.bottom != undefined && check(point.bottom, "mask") && (check(point.bottom, "number") || check(point.bottom, "space"))) point.bottom.classList.remove("mask");
+        // 把四周所有是空白的區塊都放進 localList 裡
+        while(point.up != undefined && check(point.up, "space")){ if(!game.contains(localUpList, point.up)) localUpList.push(point.up); point.up = point.up.up; }
+        while(point.left != undefined && check(point.left, "space")){ if(!game.contains(localLeftList, point.left)) localLeftList.push(point.left); point.left = point.left.left; }
+        while(point.right != undefined && check(point.right, "space")){ if(!game.contains(localRightList, point.right)) localRightList.push(point.right); point.right = point.right.right; }
+        while(point.bottom != undefined && check(point.bottom, "space")){ if(!game.contains(localBottomList, point.bottom)) localBottomList.push(point.bottom); point.bottom = point.bottom.bottom; }
+        // 遍歷某一個方向的list 並且遞迴
+        for(let i of localUpList) game.makeGroup(i);
+        for(let i of localLeftList) game.makeGroup(i);
+        for(let i of localRightList) game.makeGroup(i);
+        for(let i of localBottomList) game.makeGroup(i);
+    }
+    #event(ignoreThis, event){
+        if(this.firstOfblock){
+            this.#createBoom(event.srcElement.position);
+            this.#makeNumber();
+            this.firstOfblock = false;
+        }
+        let statusMask = "mask";
+        let statusBoom = "boom";
+        let statusSpace = "space";
+        event.target.classList.remove(statusMask);
+        if(event.target.classList.contains(statusBoom)){
+            let boom = document.querySelectorAll(`.${statusBoom}`);
+            for(let i of boom) i.classList.remove(statusMask);
+            alert("Game Over");
+            return;
+        }
+        else if(event.target.classList.contains(statusSpace)) game.makeGroup(event.target);
+        
+        let maskSize = document.querySelectorAll(".mask").length;
+        let boomSize = document.querySelectorAll(".boom").length;
+        if(maskSize == boomSize){
+            alert("You Win This Game"); 
+            return;
+        }
+    }
+    #createEvent(){
         for(let i = 0;i < this.height;i++){
             for(let j = 0;j < this.width;j++){
-                this.grid[i][j].onclick = event;
+                this.grid[i][j].onclick = this.#event.bind(this,event);
             }
         }
     }
 }
 
-new game(20,20);
+new game(49, 33, 0);

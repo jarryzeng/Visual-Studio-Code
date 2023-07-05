@@ -1,3 +1,18 @@
+class linkedList{
+    constructor(point, height){
+        this.point = point;
+        this.height = height;
+        this.parent = undefined;
+        this.next = undefined;
+    }
+    makeParent(parent){
+        this.parent = parent;
+    }
+    makeNext(next){
+        this.next = next;
+    }
+}
+
 class game{
     constructor(width, height){
         this.grid = [];
@@ -133,6 +148,13 @@ class game{
             }
             if(this.register[i].length == 0) this.register[i] = this.blank;
             if(i) this.#makeGroup(i);
+            else{
+                for(let Layer of this.register[0]){
+                    for(let iterator = Layer[0];iterator < Layer[1];iterator++){
+                        this.grid[0][iterator].link = new linkedList(Layer, 0);
+                    }
+                }
+            }
         }
     }
     #makeGroup(height){
@@ -140,13 +162,19 @@ class game{
         for(let upLayer of this.register[height - 1]){
             for(let thisLayer of this.register[height]){
                 if(thisLayer[0] <= upLayer[1] && thisLayer[1] >= upLayer[0]){
-                    
+                    for(let iterator = thisLayer[0];iterator < thisLayer [1];iterator++){
+                        let thisPosition = this.grid[height][iterator];
+                        let parentPosition = this.grid[height - 1][upLayer[0]];
+                        thisPosition.link = new linkedList(thisLayer, height);
+                        thisPosition.link.makeParent(parentPosition.link);
+                    }
                 }
             }
         }
     }
     #createEvent(){
         let event = function(){
+            console.log(this);
             let statusMask = "mask";
             let statusBoom = "boom";
             this.classList.remove(statusMask);
@@ -158,7 +186,9 @@ class game{
         }
         for(let i = 0;i < this.height;i++){
             for(let j = 0;j < this.width;j++){
-                this.grid[i][j].onclick = event;
+                let position = this.grid[i][j];
+                position.onclick = event;
+                if(position.link != undefined) console.log(position.link);
             }
         }
     }
