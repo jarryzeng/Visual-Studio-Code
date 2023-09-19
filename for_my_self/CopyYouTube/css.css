@@ -1,12 +1,42 @@
 *{
     background: rgb(32, 32, 32);
     color: rgb(224, 224, 224);
+    margin: 0;
+}
+body .cursor-pointer{
+    cursor: pointer;
 }
 body .NavigationHead{
     display: flex;
     direction: ltr;
 }
-body .NavigationHead .NavigationLeftTrigger{
+body .NavigationHead .NavigationHeadLeftBlock{
+    margin: 10px;
+    align-items: center;
     display: flex;
-    
+    position: absolute;
+    left: 0;
+    width: 180px;
+    height: 35px;
+}
+body .NavigationHead .NavigationHeadLeftBlock .NavigationLeftTrigger{
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 20%;
+    fill: rgb(224, 224, 224);
+}
+body .NavigationHead .NavigationHeadLeftBlock .NavigationLeftTrigger .NavigationLeftTriggerButton{
+    height: 25px;
+    width: 100%;
+}
+body .NavigationHead .NavigationHeadLeftBlock .NavigationLeftTrigger:hover,
+body .NavigationHead .NavigationHeadLeftBlock .NavigationLeftTrigger:hover .NavigationLeftTriggerButton{
+    background: rgb(64, 64, 64);
+    border-radius: 100%;
+}
+body .NavigationHead .NavigationHeadLeftBlock .YoutubeLogo{
+    width: 120px;
+    fill: rgb(224, 224, 224);
 }
