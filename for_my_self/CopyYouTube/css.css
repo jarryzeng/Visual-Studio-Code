@@ -1,0 +1,12 @@
+*{
+    background: rgb(32, 32, 32);
+    color: rgb(224, 224, 224);
+}
+body .NavigationHead{
+    display: flex;
+    direction: ltr;
+}
+body .NavigationHead .NavigationLeftTrigger{
+    display: flex;
+    
+}
