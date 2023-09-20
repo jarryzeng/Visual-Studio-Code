@@ -14,7 +14,7 @@ body .NavigationHead .NavigationHeadLeftBlock{
     margin: 10px;
     align-items: center;
     display: flex;
-    position: absolute;
+    position: sticky;
     left: 0;
     width: 180px;
     height: 35px;
@@ -25,21 +25,94 @@ body .NavigationHead .NavigationHeadLeftBlock .NavigationLeftTrigger{
     align-items: center;
     height: 100%;
     width: 20%;
+    border-radius: 100%;
     fill: rgb(224, 224, 224);
 }
-body .NavigationHead .NavigationHeadLeftBlock .NavigationLeftTrigger .NavigationLeftTriggerButton{
+body .NavigationHead .NavigationHeadLeftBlock .NavigationLeftTrigger .iconButton{
     height: 25px;
     width: 100%;
+    border-radius: 100%;
 }
 body .NavigationHead .NavigationHeadLeftBlock .NavigationLeftTrigger:hover,
-body .NavigationHead .NavigationHeadLeftBlock .NavigationLeftTrigger:hover .NavigationLeftTriggerButton{
+body .NavigationHead .NavigationHeadLeftBlock .NavigationLeftTrigger:hover .iconButton{
     background: rgb(64, 64, 64);
-    border-radius: 100%;
+}
+body .NavigationHead .NavigationHeadLeftBlock .NavigationLeftTrigger:active,
+body .NavigationHead .NavigationHeadLeftBlock .NavigationLeftTrigger:active .iconButton{
+    background: rgb(128, 128, 128);
 }
 body .NavigationHead .NavigationHeadLeftBlock .YoutubeLogo{
     width: 120px;
     fill: rgb(224, 224, 224);
 }
+
 body .NavigationHead .NavigationHeadCenterBlock{
+    margin: 10px;
+    width: 60%;
+    height: 35px;
+    display: flex;
+    position: sticky;
+    justify-content: center;
+    align-items: center;
+}
+body .NavigationHead .NavigationHeadCenterBlock .inputBlock{
+    width: 60%;
+    height: 35px;
+    display: flex;
+    align-items: center;
+}
+
+body .NavigationHead .NavigationHeadCenterBlock .inputBlock .form{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+body .NavigationHead .NavigationHeadCenterBlock .inputBlock .form .textInput{
+    width: 75%;
+    height: 31px;
+    border: 0.5px rgb(96, 96, 96) solid;
+    border-radius: 15px 0 0 15px;
+}
+body .NavigationHead .NavigationHeadCenterBlock .inputBlock .form .submit{
+    width: 60px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(64, 64, 64);
+    border: 0.5px rgb(96, 96, 96) solid;
+    border-radius: 0 15px 15px 0;
+}
+body .NavigationHead .NavigationHeadCenterBlock .inputBlock .form .submit .iconSearch{
+    width: 24px;
+    height: 24px;
+    fill: rgb(255, 255, 255);
+    background: rgb(64, 64, 64);
+}
+body .NavigationHead .NavigationHeadCenterBlock .recordRadio{
+    display: flex;
+    align-items: center;
+    background: rgb(64, 64, 64);
+    height: 100%;
+    width: 35px;
+    border: 0; 
+    border-radius: 50px;
+}
+body .NavigationHead .NavigationHeadCenterBlock .recordRadio .iconRecord{
+    fill: rgb(255, 255, 255);
+    width: 30px;
+    background: rgb(64, 64, 64);
+    border-radius: 20px;
+}
+body .NavigationHead .NavigationHeadCenterBlock .recordRadio:hover,
+body .NavigationHead .NavigationHeadCenterBlock .recordRadio:hover .iconRecord{
+    background: rgb(96, 96, 96);
+}
+
+body .NavigationHead .NavigationHeadRightBlock{
+    position: absolute;
+    display: flex;
+    right: 0;
     align-items: center;
 }
