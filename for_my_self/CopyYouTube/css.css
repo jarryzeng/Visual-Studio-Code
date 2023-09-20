@@ -6,12 +6,16 @@
 body .cursor-pointer{
     cursor: pointer;
 }
+/* 標籤列設定 */
 body .NavigationHead{
+    width: 100%;
     display: flex;
     direction: ltr;
+    position: sticky;
 }
+/* 標籤列左邊區塊 */
 body .NavigationHead .NavigationHeadLeftBlock{
-    margin: 10px;
+    margin: 10px 5px;
     align-items: center;
     display: flex;
     position: sticky;
@@ -23,15 +27,18 @@ body .NavigationHead .NavigationHeadLeftBlock .NavigationLeftTrigger{
     margin: 0 10px;
     display: flex;
     align-items: center;
-    height: 100%;
-    width: 20%;
-    border-radius: 100%;
+    justify-content: center;
+    height: 40px;
+    width: 40px;
     fill: rgb(224, 224, 224);
 }
 body .NavigationHead .NavigationHeadLeftBlock .NavigationLeftTrigger .iconButton{
     height: 25px;
-    width: 100%;
-    border-radius: 100%;
+    width: 25px;
+}
+body .NavigationHead .NavigationHeadLeftBlock .NavigationLeftTrigger,
+body .NavigationHead .NavigationHeadLeftBlock .NavigationLeftTrigger .iconButton{
+    border-radius: 20px;
 }
 body .NavigationHead .NavigationHeadLeftBlock .NavigationLeftTrigger:hover,
 body .NavigationHead .NavigationHeadLeftBlock .NavigationLeftTrigger:hover .iconButton{
@@ -45,7 +52,7 @@ body .NavigationHead .NavigationHeadLeftBlock .YoutubeLogo{
     width: 120px;
     fill: rgb(224, 224, 224);
 }
-
+/* 標籤列中間區塊 */
 body .NavigationHead .NavigationHeadCenterBlock{
     margin: 10px;
     width: 60%;
@@ -56,12 +63,11 @@ body .NavigationHead .NavigationHeadCenterBlock{
     align-items: center;
 }
 body .NavigationHead .NavigationHeadCenterBlock .inputBlock{
-    width: 60%;
+    width: 90%;
     height: 35px;
     display: flex;
     align-items: center;
 }
-
 body .NavigationHead .NavigationHeadCenterBlock .inputBlock .form{
     height: 100%;
     width: 100%;
@@ -69,7 +75,7 @@ body .NavigationHead .NavigationHeadCenterBlock .inputBlock .form{
     align-items: center;
 }
 body .NavigationHead .NavigationHeadCenterBlock .inputBlock .form .textInput{
-    width: 75%;
+    width: 100%;
     height: 31px;
     border: 0.5px rgb(96, 96, 96) solid;
     border-radius: 15px 0 0 15px;
@@ -77,6 +83,8 @@ body .NavigationHead .NavigationHeadCenterBlock .inputBlock .form .textInput{
 body .NavigationHead .NavigationHeadCenterBlock .inputBlock .form .submit{
     width: 60px;
     height: 35px;
+    position: sticky;
+    right: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -91,6 +99,7 @@ body .NavigationHead .NavigationHeadCenterBlock .inputBlock .form .submit .iconS
     background: rgb(64, 64, 64);
 }
 body .NavigationHead .NavigationHeadCenterBlock .recordRadio{
+    margin: 0 15px;
     display: flex;
     align-items: center;
     background: rgb(64, 64, 64);
@@ -109,10 +118,61 @@ body .NavigationHead .NavigationHeadCenterBlock .recordRadio:hover,
 body .NavigationHead .NavigationHeadCenterBlock .recordRadio:hover .iconRecord{
     background: rgb(96, 96, 96);
 }
-
+/* 標籤列右邊區塊 */
 body .NavigationHead .NavigationHeadRightBlock{
+    margin: 10px 5px;
     position: absolute;
     display: flex;
+    justify-content: flex-end;
     right: 0;
+    width: 180px;
+    height: 35px;
     align-items: center;
+}
+body .NavigationHead .NavigationHeadRightBlock .menuButton{
+    border: 0px;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+body .NavigationHead .NavigationHeadRightBlock .menuButton .iconMenu{
+    width: 24px;
+    height: 24px;
+    fill: rgb(255, 255, 255);
+}
+body .NavigationHead .NavigationHeadRightBlock .menuButton:active,
+body .NavigationHead .NavigationHeadRightBlock .menuButton:active .iconMenu{
+    background: rgb(64, 64, 64);
+    border-radius: 20px;
+}
+body .NavigationHead .NavigationHeadRightBlock .signInBlock{
+    text-decoration:none;
+    margin: 0 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 90px;
+    border: 1px rgb(96, 96, 96) solid;
+    border-radius: 40px;
+}
+body .NavigationHead .NavigationHeadRightBlock .signInBlock .iconSignIn{
+    width: 24px;
+    height: 24px;
+    fill: rgb(0, 158, 250);
+}
+body .NavigationHead .NavigationHeadRightBlock .signInBlock .text{
+    color: rgb(0, 158, 250);
+}
+body .NavigationHead .NavigationHeadRightBlock .signInBlock:hover,
+body .NavigationHead .NavigationHeadRightBlock .signInBlock:hover .iconSignIn,
+body .NavigationHead .NavigationHeadRightBlock .signInBlock:hover .text{
+    background: rgb(64, 64, 64)
+}
+body .NavigationHead .NavigationHeadRightBlock .signInBlock:active,
+body .NavigationHead .NavigationHeadRightBlock .signInBlock:active .iconSignIn,
+body .NavigationHead .NavigationHeadRightBlock .signInBlock:active .text{
+    background: rgb(96, 96, 96);
 }
