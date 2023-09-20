@@ -40,3 +40,6 @@ body .NavigationHead .NavigationHeadLeftBlock .YoutubeLogo{
     width: 120px;
     fill: rgb(224, 224, 224);
 }
+body .NavigationHead .NavigationHeadCenterBlock{
+    align-items: center;
+}
