@@ -1,36 +1,45 @@
 const fs = require("fs");
-let path;
+const buffer = require("buffer");
+
+function printError(local, err){
+    console.log(`\nError from ${local}`);
+    console.log(err);
+    console.log('\n');
+}
 
 async function writeFile(location, content){
     try{
-        await fs.writeFile(location, content);
+        await fs.promises.writeFile(location, content);
+    }
+    catch(err){ printError('write file', err); }
+}
+
+async function readFile(location, fileName, search){
+    try{
+        let file = await fs.promises.readFile(`${location}${fileName}`, 'utf8');
+        if(fileName != search && search != '*'){
+            printError('read file', 'the file name is different');
+            return;
+        };
+        writeFile(`${location}${fileName}`, file);
     }
     catch(err){
-        console.log("Error from write file:");
-        console.log(err);
+        switch(err.errno){
+            case -4068: printError('read file', 'this is directory'); break;
+            default: printError('read file', err);
+        }
     }
 }
 
-async function readFile(location, fileName){
+async function readdir(location, search){
     try{
-        await fs.readFile(`${location}${fileName}`);
+        let files = await fs.promises.readdir(location);
+        files.map((fileName) => readFile(location, fileName, search));
     }
-    catch(err){
-        console.log("Error from read file:");
-        console.log(err);
-    }
+    catch(err){ printError('read directory', err); }
 }
 
-async function readdir(location){
-    try{
-        let files = await fs.readdir(location);
-        files.map((fileName) => readFile(location, fileName));
-    }
-    catch(err){
-        console.log("Error from read directory:");
-        console.log(err);
-    }
-}
+readdir("./", "rewrite_file.js");
 
 // fs.readdir(`${path}`, (err, files) => {
 //     if(err) console.log(err);
