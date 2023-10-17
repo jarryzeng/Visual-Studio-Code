@@ -6,6 +6,16 @@ from datetime import datetime
 
 class window:
     def __init__(self, times=None, boo=None, start=None, end=None):
+        self.setWindow()
+        self.createObject()
+
+        self.times = times
+        self.boo = boo
+        self.start = start
+        self.end = end
+        self.loop()
+
+    def setWindow(self):
         self.window = tk.Tk()
         self.window.config(background="gray")
         self.window.resizable(width=0, height=0)
@@ -16,14 +26,6 @@ class window:
         self.window.wm_attributes("-topmost", True)
         self.window.wm_attributes("-toolwindow", True)
         self.window.wm_attributes("-transparentcolor", "gray")
-
-        self.createObject()
-
-        self.times = times
-        self.boo = boo
-        self.start = start
-        self.end = end
-        self.loop()
     
     def createObject(self):
         self.var1 = tk.StringVar()
