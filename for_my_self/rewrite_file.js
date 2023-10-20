@@ -1,8 +1,20 @@
 const fs = require("fs");
 
+let sys = process.platform;
+
+function printSuccess(message){
+    switch(sys){
+        case "linux": console.log(`\x1B[32m${message}`); break;
+        default:console.log(message);
+    }
+}
+
 function printError(local, err){
-    console.log(`Error from ${local}.`);
-    console.log(err);
+    let errorMassage = `Error from ${local}.\n${err}`;
+    switch(sys){
+        case "linux": console.log(`\x1B[31m${errorMassage}`); break;
+        default: console.log(errorMassage);
+    }
 }
 
 function funcFinish(local){
@@ -52,6 +64,6 @@ readdir("./", filename, function(file){
     file = file.split(':').join('\n');
     writeFile(filename, file);
     readdir("./", filename, callback=(file) => {
-        console.log(file);
+        printSuccess("file is change.");
     })
 });
