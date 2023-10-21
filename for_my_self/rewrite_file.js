@@ -2,28 +2,39 @@ const fs = require("fs");
 
 let sys = process.platform;
 
-function printSuccess(message){
+function printSuccess(local){
+    let successMessage = `${local} is success!`
     switch(sys){
-        case "linux": console.log(`\x1B[32m${message}`); break;
-        default:console.log(message);
+        case "linux":
+            console.log(`\x1B[32m${successMessage}`);
+            break;
+        default:console.log(successMessage);
     }
 }
 
 function printError(local, err){
     let errorMassage = `Error from ${local}.\n${err}`;
     switch(sys){
-        case "linux": console.log(`\x1B[31m${errorMassage}`); break;
+        case "linux":
+            console.log(`\x1B[31m${errorMassage}`);
+            break;
         default: console.log(errorMassage);
     }
 }
 
 function funcFinish(local){
-    console.log(`${local} is finish work.\n`)
+    switch(sys){
+        case "linux":
+            console.log(`\x1B[0m${local} is finish work.\n`);
+            break;
+        default: console.log(`${local} is finish work.\n`);
+    }
 }
 
 async function writeFile(location, content){
     try{
         await fs.promises.writeFile(location, content);
+        printSuccess('write file');
     }
     catch(err){ 
         printError('write file', err);
@@ -31,14 +42,15 @@ async function writeFile(location, content){
     finally{ funcFinish('write file'); }
 }
 
-async function readFile(location, fileName, search, callback){
+async function searchFile(location, fileName, searchName, callback){
     try{
         let file = await fs.promises.readFile(`${location}${fileName}`, 'utf8');
-        if(fileName != search && search != '*'){
+        if(fileName != searchName && searchName != '*'){
             printError('read file', 'the file name is different.');
             return;
         };
         if(callback != undefined) callback(file);
+        printSuccess('read file');
     }
     catch(err){
         switch(err.errno){
@@ -50,20 +62,20 @@ async function readFile(location, fileName, search, callback){
     finally{ funcFinish('read file'); }
 }
 
-async function readdir(location="./", search, callback=undefined){
+async function readdir(location="./", callback=undefined){
     try{
         let files = await fs.promises.readdir(location);
-        files.map((fileName) => readFile(location, fileName, search, callback));
+        if(callback != undefined) callback(files);
+        printSuccess('read directory');
     }
     catch(err){ printError('read directory', err); }
     finally{ funcFinish('read directory'); }
 }
 
 let filename = "path.txt";
-readdir("./", filename, function(file){
-    file = file.split(':').join('\n');
-    writeFile(filename, file);
-    readdir("./", filename, callback=(file) => {
-        printSuccess("file is change.");
-    })
+readdir("./", (files) => {
+    files.map((file) => searchFile("./", filename, file, (file) => {
+        file = file.split(':').join('\n');
+        writeFile(filename, file);
+    }));
 });
