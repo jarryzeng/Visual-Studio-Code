@@ -1,3 +1,3 @@
 git init
-git remote add "jarryzeng" "https://github.com/jarryzeng/git.git"
-git pull "jarryzeng" "new-test"
+git remote add "origin" "https://github.com/jarryzeng/git.git"
+git pull "origin" "new-test"
