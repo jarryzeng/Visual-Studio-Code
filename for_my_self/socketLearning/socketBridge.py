@@ -10,7 +10,7 @@ s.listen(5)
 isBridgeOpen = True
 isServerStart = False
 
-print('server start at %s:%s' % (host, port))
+print(f'server start at {host}:{port})
 print('wait for connection...')
 
 while isBridgeOpen:
