@@ -4,5 +4,5 @@ git add .
 call "./set time.bat"
 
 git commit -m %year%-%month%-%day%.%hour%:%min%
-git push "origin" "new-test"
+git push
 git remote remove "origin"
