@@ -1,5 +1,5 @@
 import socket
-host = '192.168.1.104'
+host = '120.124.135.96'
 port = 7
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -14,4 +14,4 @@ while True:
         s.close()
         print('server closed connection')
         break
-    print('recv: ' +  indata.decode())
+    print(f'recv: {indata.decode()}', end='\n\n')

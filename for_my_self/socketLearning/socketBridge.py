@@ -15,13 +15,14 @@ print('wait for connection...')
 
 while isBridgeOpen:
     conn, addr = s.accept()
-    print('connected by' + str(addr))
+    print(f'connected by {str(addr)}')
     while True:
         indata = conn.recv(1024)
         command = indata.decode()
 
         if command == 'stop':
             print('command: stop')
+            conn.send(b'')
             conn.close()
             print('client closed connection.')
             break
@@ -29,6 +30,7 @@ while isBridgeOpen:
         elif command == 'bridge stop':
             print('command: bridge stop')
             isBridgeOpen = False
+            conn.send(b'')
             conn.close()
             print('client closed connection.')
             break
@@ -36,38 +38,58 @@ while isBridgeOpen:
         elif command == 'start':
             if isServerStart:
                 print('command: start')
-                req.send('open the computer'.encode())
+                req.send(b'open the computer')
                 res = req.recv(1024)
                 conn.send(res)
             else:
-                conn.send('server did not start'.encode())
+                conn.send(b'server did not start')
                 print('server did not start')
 
-        elif command == 'server start':
-            print('command: server start')
+        elif command == 'server connect':
+            print('command: server connect')
             if not isServerStart:
                 isServerStart = True
-                reqIp = '192.168.1.104'
+                reqIp = '120.124.135.96'
                 reqPort = 200
-                req = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                req.connect((reqIp, reqPort))
-                conn.send('server is start'.encode())
+                try:
+                    req = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                    req.connect((reqIp, reqPort))
+                    res = req.recv(1024)
+                    conn.send(res)
+                except Exception as exc:
+                    conn.send(str(exc).encode())
+                    print(exc)
             else:
-                conn.send('server is already start'.encode())
-                print('server is already start')
+                conn.send(b'server is already connected')
+                print('server is already connected')
+
+        elif command == 'server disconnect':
+            print('command: server disconnect')
+            if isServerStart:
+                isServerStart = False
+                req.send(b'disconnect')
+                res = req.recv(1024)
+                req.close()
+                conn.send(res)
+                print(res.decode())
+            else:
+                conn.send(b'server did not connect')
+                print('server did not connect')
 
         elif command == 'server stop':
             print('command: server stop')
             if isServerStart:
                 isServerStart = False
-                req.send('stop'.encode())
+                req.send(b'stop')
+                res = req.recv(1024)
                 req.close()
-                conn.send('server is stop'.encode())
+                conn.send(res)
+                print(res.decode())
             else:
-                conn.send('server did not start'.encode())
+                conn.send(b'server did not start')
                 print('server did not start')
 
         else:
-            conn.send('unknow command'.encode())
-            print('unknow command: ' + command)
+            conn.send(b'unknow command')
+            print(f'unknow command: {command}')
 s.close()
