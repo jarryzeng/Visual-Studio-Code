@@ -1,3 +1,4 @@
+import wakeOnLan
 import socket
 import os
 host = '0.0.0.0'
@@ -10,6 +11,7 @@ s.listen(5)
 
 isBridgeOpen = True
 isServerStart = False
+wantReboot = False
 
 print(f'server start at {host}:{port}')
 print('wait for connection...')
@@ -24,7 +26,7 @@ while isBridgeOpen:
         if command == 'stop' or command == 'bridge stop' or command == 'bridge reboot':
             print(f'command: {command}')
             if command != 'stop': isBridgeOpen = False
-            if command == 'bridge reboot': os.system('pwd') # call rebootServer method
+            if command == 'bridge reboot': wantReboot = True
             conn.send(b'')
             conn.close()
             print('client closed connection.')
@@ -44,8 +46,10 @@ while isBridgeOpen:
             print('command: server connect')
             if not isServerStart:
                 isServerStart = True
-                reqIp = '120.124.135.96'
-                reqPort = 200
+                conn.send(b'input destination server ip')
+                reqIp = conn.recv(1024).decode()
+                conn.send(b'input target port')
+                reqPort = conn.recv(1024).decode()
                 try:
                     req = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     req.connect((reqIp, reqPort))
@@ -88,3 +92,5 @@ while isBridgeOpen:
             conn.send(b'unknow command')
             print(f'unknow command: {command}')
 s.close()
+
+if wantReboot: os.system('bash rebootServer.sh')
