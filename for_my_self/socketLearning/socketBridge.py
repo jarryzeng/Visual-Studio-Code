@@ -1,4 +1,5 @@
 import socket
+import os
 host = '0.0.0.0'
 port = 7
 
@@ -20,16 +21,10 @@ while isBridgeOpen:
         indata = conn.recv(1024)
         command = indata.decode()
 
-        if command == 'stop':
-            print('command: stop')
-            conn.send(b'')
-            conn.close()
-            print('client closed connection.')
-            break
-
-        elif command == 'bridge stop':
-            print('command: bridge stop')
-            isBridgeOpen = False
+        if command == 'stop' or command == 'bridge stop' or command == 'bridge reboot':
+            print(f'command: {command}')
+            if command != 'stop': isBridgeOpen = False
+            if command == 'bridge reboot': os.system('pwd') # call rebootServer method
             conn.send(b'')
             conn.close()
             print('client closed connection.')
