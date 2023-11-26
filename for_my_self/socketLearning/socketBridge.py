@@ -1,4 +1,3 @@
-import wakeOnLan
 import socket
 import os
 host = '0.0.0.0'
@@ -32,15 +31,18 @@ while isBridgeOpen:
             print('client closed connection.')
             break
 
-        elif command == 'start':
+        elif command == 'server start':
             if isServerStart:
-                print('command: start')
+                print('command: server start')
                 req.send(b'open the computer')
                 res = req.recv(1024)
                 conn.send(res)
             else:
-                conn.send(b'server did not start')
-                print('server did not start')
+                conn.send(b'input the server mac')
+                parame = conn.recv(1024)
+                os.system(f'python wakeOnLan.py {parame}')
+                conn.send(b'try to opening the server input command later')
+                print('opening the server')
 
         elif command == 'server connect':
             print('command: server connect')
