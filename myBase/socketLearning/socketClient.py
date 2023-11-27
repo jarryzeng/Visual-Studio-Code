@@ -1,5 +1,5 @@
 import socket
-host = '10.147.20.138'
+host = input('input the host ip:')
 port = 7
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
