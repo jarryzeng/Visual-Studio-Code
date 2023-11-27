@@ -1,10 +1,11 @@
 import socket
-host = '120.124.135.96'
-port = 200
+
+host = input('input the public ip:')
+port = input('input the monitor port:')
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-s.bind((host, port))
+s.bind((host, int(port)))
 s.listen(5)
 
 isServerStart = True

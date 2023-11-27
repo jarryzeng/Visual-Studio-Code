@@ -1,11 +1,72 @@
 import socket
 import os
-host = '0.0.0.0'
-port = 7
+
+def start(conn, isServerStart):
+    if isServerStart:
+        print('server is opening')
+        server.send(b'open the computer')
+        res = server.recv(1024)
+        conn.send(res)
+    else:
+        print('opening the server')
+        conn.send(b'input the server mac')
+        parame = conn.recv(1024)
+        os.system(f'python wakeOnLan.py {parame}')
+        conn.send(b'trying to opening the server')
+
+    return isServerStart
+
+def connect(conn):
+    conn.send(b'input the destination server ip')
+    serverIp = conn.recv(1024).decode()
+    print(f'destination server ip {serverIp}')
+    conn.send(b'input connect port')
+    serverPort = conn.recv(1024).decode()
+    print(f'destination server port {serverPort}')
+    try:
+        server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        server.settimeout(10)
+        server.connect((serverIp, int(serverPort)))
+        res = server.recv(1024)
+        conn.send(res)
+        return True, server
+    except Exception as exc:
+        conn.send(str(exc).encode())
+        print(exc)
+
+    return False, None
+
+def disconnect(conn, server):
+    server.send(b'disconnect')
+    res = server.recv(1024)
+    server.close()
+    conn.send(res)
+    print(res.decode())
+
+def stop(conn, server):
+    server.send(b'stop')
+    res = server.recv(1024)
+    server.close()
+    conn.send(res)
+    print(res.decode())
+
+def send(conn, server, requset):
+    print(f'send to sever: {requset}')
+    try:
+        server.send(f'requset {requset}'.encode())
+        res = server.recv(1024)
+        conn.send(res)
+        print(f'server: {res.decode()}')
+    except Exception as timeout:
+        conn.send(str(timeout).encode())
+        print(timeout)
+
+host = input('input the public ip:')
+port = input('input the monitor port:')
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-s.bind((host, port))
+s.bind((host, int(port)))
 s.listen(5)
 
 isBridgeOpen = True
@@ -21,74 +82,54 @@ while isBridgeOpen:
     while True:
         indata = conn.recv(1024)
         command = indata.decode()
-
-        if command == 'stop' or command == 'bridge stop' or command == 'bridge reboot':
+        if command == 'stop' or command == 'bridge stop' or command == 'bridge reboot' or len(indata) == 0:
             print(f'command: {command}')
-            if command != 'stop': isBridgeOpen = False
+            if command != 'stop' and command != '': isBridgeOpen = False
             if command == 'bridge reboot': wantReboot = True
             conn.send(b'')
             conn.close()
-            print('client closed connection.')
+            print(f'client {str(addr)} closed connection.')
             break
-
-        elif command == 'server start':
-            if isServerStart:
+            
+        elif 'server ' in command:
+            if 'start' in command:
                 print('command: server start')
-                req.send(b'open the computer')
-                res = req.recv(1024)
-                conn.send(res)
-            else:
-                conn.send(b'input the server mac')
-                parame = conn.recv(1024)
-                os.system(f'python wakeOnLan.py {parame}')
-                conn.send(b'try to opening the server input command later')
-                print('opening the server')
+                isServerStart = start(conn, isServerStart)
 
-        elif command == 'server connect':
-            print('command: server connect')
-            if not isServerStart:
-                isServerStart = True
-                conn.send(b'input destination server ip')
-                reqIp = conn.recv(1024).decode()
-                conn.send(b'input target port')
-                reqPort = conn.recv(1024).decode()
-                try:
-                    req = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    req.connect((reqIp, reqPort))
-                    res = req.recv(1024)
-                    conn.send(res)
-                except Exception as exc:
-                    conn.send(str(exc).encode())
-                    print(exc)
-            else:
-                conn.send(b'server is already connected')
-                print('server is already connected')
+            elif 'connect' in command:
+                print('command: server connect')
+                if not isServerStart:
+                    isServerStart, server = connect(conn)
+                else:
+                    conn.send(b'server is already connected')
+                    print('server is already connected')
 
-        elif command == 'server disconnect':
-            print('command: server disconnect')
-            if isServerStart:
-                isServerStart = False
-                req.send(b'disconnect')
-                res = req.recv(1024)
-                req.close()
-                conn.send(res)
-                print(res.decode())
-            else:
-                conn.send(b'server did not connect')
-                print('server did not connect')
+            elif 'disconnect' in command:
+                print('command: server disconnect')
+                if isServerStart: 
+                    isServerStart = False
+                    disconnect(conn, server)
+                else:
+                    conn.send(b'server did not connect')
+                    print('server did not connect')
 
-        elif command == 'server stop':
-            print('command: server stop')
-            if isServerStart:
-                isServerStart = False
-                req.send(b'stop')
-                res = req.recv(1024)
-                req.close()
-                conn.send(res)
-                print(res.decode())
-            else:
-                conn.send(b'server did not start')
-                print('server did not start')
+            elif 'stop' in command:
+                print('command: server stop')
+                if isServerStart: 
+                    isServerStart = False
+                    stop(conn, server)
+                else:
+                    conn.send(b'server did not connect')
+                    print('server did not connect')
+
+            elif 'send ' in command:
+                print('command: server send')
+                if isServerStart:
+                    requset = command[12:]
+                    send(conn, server, requset)
+                else:
+                    conn.send(b'server did not connect')
+                    print('server did not connect')
 
         else:
             conn.send(b'unknow command')

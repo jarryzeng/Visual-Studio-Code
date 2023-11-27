@@ -5,9 +5,7 @@ import struct
 import logging
 import time
 
-
 LOG = logging.getLogger(__name__)
-
 
 def create_magic_packet(macaddress):
     if len(macaddress) == 12:
