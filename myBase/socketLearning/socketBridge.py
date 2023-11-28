@@ -34,12 +34,13 @@ def connect(conn):
 
     return False, None
 
-def disconnect(conn, server):
+def disconnect(conn, server, command):
     server.send(b'disconnect')
     res = server.recv(1024)
     server.close()
-    conn.send(res)
+    if command[7:] == 'disconnect':conn.send(res)
     print(res.decode())
+    return False
 
 def stop(conn, server):
     server.send(b'stop')
@@ -47,14 +48,15 @@ def stop(conn, server):
     server.close()
     conn.send(res)
     print(res.decode())
+    return False
 
 def send(conn, server, requset):
     print(f'send to sever: {requset}')
     try:
-        server.send(f'requset {requset}'.encode())
+        server.send(f'request {requset}'.encode())
         res = server.recv(1024)
         conn.send(res)
-        print(f'server: {res.decode()}')
+        print(f'server response: {res.decode()}')
     except Exception as timeout:
         conn.send(str(timeout).encode())
         print(timeout)
@@ -85,7 +87,8 @@ while isBridgeOpen:
         indata = conn.recv(1024)
         command = indata.decode()
         print(f'command: {command}')
-        if command == 'stop' or command == 'bridge stop' or command == 'bridge reboot' or len(indata) == 0:
+        if command == 'stop' or command == 'bridge stop' or command == 'bridge reboot' or command == '':
+            if isServerStart: isServerStart = disconnect(conn, server, command)
             if command != 'stop' and command != '': isBridgeOpen = False
             if command == 'bridge reboot': wantReboot = True
             conn.send(b'')
@@ -93,63 +96,22 @@ while isBridgeOpen:
             print(f'client {str(addr)} closed connection.')
             break
         
-        elif 'server ' in command:
-            '''
-            if isServerStart:
-                if 'start' in command: start(conn, isServerStart)
-                elif 'stop' in command: stop(conn, server)
-                elif 'disconnect' in command: disconnect(conn, server)
-                elif 'connect' in command: send2Client(conn, 'server is already connected')
-                elif 'send' in command:
-                    requset = command[12:]
-                    isServerStart = send(conn, server, requset)
-                else: send2Client('unknow command')
+        elif command[:6] == 'server':
+            if command[7:] == 'start': start(conn, isServerStart)
+            elif isServerStart:
+                if command[7:] == 'connect': send2Client(conn, 'server is already connected')
+                elif command[7:11] == 'send': send(conn, server, command[12:])
+                elif command[7:] == 'stop': isServerStart = stop(conn, server)
+                elif command[7:] == 'disconnect': isServerStart = disconnect(conn, server, command)
+                else: send2Client(conn, 'unknow command')
             else:
-                if 'start' in command: start(conn, isServerStart)
-                elif 'connect' in command: isServerStart, server = connect(conn)
-                elif 'disconnect' in command or 'stop' in command or 'send' in command: send2Client('server did not connect')
-                else: send2Client('unknow command')
-
-            '''
-            if 'start\n' in command:
-                start(conn, isServerStart)
-
-            elif 'connect\n' in command:
-                if not isServerStart:
-                    isServerStart, server = connect(conn)
-                else:
-                    conn.send(b'server is already connected')
-                    print('server is already connected')
-
-            elif 'disconnect\n' in command:
-                if isServerStart: 
-                    isServerStart = False
-                    disconnect(conn, server)
-                else:
-                    conn.send(b'server did not connect')
-                    print('server did not connect')
-
-            elif 'stop\n' in command:
-                if isServerStart: 
-                    isServerStart = False
-                    stop(conn, server)
-                else:
-                    conn.send(b'server did not connect')
-                    print('server did not connect')
-
-            elif 'send ' in command:
-                if isServerStart:
-                    requset = command[12:]
-                    send(conn, server, requset)
-                else:
-                    conn.send(b'server did not connect')
-                    print('server did not connect')
+                if command[7:] == 'connect': isServerStart, server = connect(conn)
+                elif command[7:] == 'disconnect' or command[7:11] == 'send' or command[7:] == 'stop': send2Client(conn, 'server did not connect')
+                else: send2Client(conn, 'unknow command')
 
         else:
             conn.send(b'unknow command')
             print('unknow command')
+
 s.close()
-
-if server != None: server.send(b'')
-
 if wantReboot: os.system('bash rebootServer.sh')

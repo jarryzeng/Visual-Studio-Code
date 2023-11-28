@@ -27,18 +27,19 @@ while isServerStart:
             conn.send(b'server is closed')
             conn.close()
             break
-
-        elif command == 'open the computer':
-            print(f'recv: {command}')
-            outdata = 'computer is opened'
-            conn.send(outdata.encode())
             
         elif command == 'disconnect':
-            print(f'recv: {command}')
+            print(f'client {str(addr)} {command}')
             conn.send(b'server is disconnect')
             conn.close()
             break
 
+        elif command[:7] == 'request':
+            print(f'recv: {command[8:]}')
+            conn.send(f'{command[8:]}'.encode())
+
         else:
+            print(command[:7])
+            conn.send(b'unknow command')
             print('unknow command')
 s.close()
