@@ -65,8 +65,10 @@ def send2Client(conn, message):
     conn.send(message.encode())
     print(message)
 
-host = input('input the public ip:')
-port = input('input the monitor port:')
+host = input('input the ip:')
+while len(host.split('.')) != 4: host = input('host ip is not set 4 of number like 192.168.1.1 \ninput the ip:')
+port = int(input('input the port:'))
+while port < 0 or port > 65535: port = input('port is not a allow value \nthe value had need to between 0 to 65535 \ninput the port:')
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -86,6 +88,7 @@ while isBridgeOpen:
     while True:
         indata = conn.recv(1024)
         command = indata.decode()
+        command = command.lower()
         print(f'command: {command}')
         if command == 'stop' or command == 'bridge stop' or command == 'bridge reboot' or command == '':
             if isServerStart: isServerStart = disconnect(conn, server, command)
