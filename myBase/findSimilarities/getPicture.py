@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from pynput import keyboard
 from PIL.ImageGrab import grab
@@ -7,7 +8,7 @@ class main:
     def __init__(self, startPosition, endPosition):
         self.startPosition = startPosition
         self.endPosition = endPosition
-        self.bool = True
+        self.isPress = True
     
     def listener(self):
         self.listen = keyboard.Listener(on_press=self.on_press, on_release=self.on_release)
@@ -15,16 +16,17 @@ class main:
         self.listen.join()
 
     def on_press(self, key):
-        if key == keyboard.KeyCode.from_char("\'") and self.bool:
-            self.bool = False
+        if key == keyboard.KeyCode.from_char("\'") and self.isPress:
+            self.isPress = False
             x, y = position()
             self.startPosition = [x, y]
         elif key == keyboard.Key.esc:
+            os.system(f"rm {self.name}")
             self.listen.stop()
 
     def on_release(self, key):
         if key == keyboard.KeyCode.from_char("\'"):
-            self.bool = True
+            self.isPress = True
             x, y = position()
             self.endPosition = [x, y]
             self.makePicture(self.startPosition, self.endPosition)
@@ -35,12 +37,13 @@ class main:
         if(x[1] < x[0]): x[1], x[0] = x[0], x[1]
         if(y[1] < y[0]): y[1], y[0] = y[0], y[1]
         bbox = (x[0], y[0], x[1], y[1])
+        print(os.times())
         time = datetime.now()
-        name = str(time.strftime("%Y-%m-%d")) + '.jpg'
+        self.name = str(time.strftime("%Y-%m-%d")) + '.jpg'
 
         try:
             img = grab(bbox = bbox)
-            img.save(name)
+            img.save("./findSimilarities/" + self.name)
         except Exception as e:
             print(e)
         
