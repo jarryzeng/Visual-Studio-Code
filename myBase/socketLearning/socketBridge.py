@@ -38,7 +38,7 @@ def disconnect(conn, server, command):
     server.send(b'disconnect')
     res = server.recv(1024)
     server.close()
-    if command[7:] == 'disconnect':conn.send(res)
+    if command[1] == 'disconnect':conn.send(res)
     print(res.decode())
     return False
 
@@ -88,28 +88,28 @@ while isBridgeOpen:
     while True:
         indata = conn.recv(1024)
         command = indata.decode()
-        command = command.lower()
+        command = command.lower().spilt()
         print(f'command: {command}')
-        if command == 'stop' or command == 'bridge stop' or command == 'bridge reboot' or command == '':
+        if command[0] == 'stop' or command[0] == 'bridge stop' or command[0] == 'bridge reboot' or command[0] == '':
             if isServerStart: isServerStart = disconnect(conn, server, command)
-            if command != 'stop' and command != '': isBridgeOpen = False
-            if command == 'bridge reboot': wantReboot = True
+            if command[0] != 'stop' and command[0] != '': isBridgeOpen = False
+            if command[0] == 'bridge reboot': wantReboot = True
             conn.send(b'')
             conn.close()
             print(f'client {str(addr)} closed connection.')
             break
         
-        elif command[:6] == 'server':
-            if command[7:] == 'start': start(conn, isServerStart)
+        elif command[0] == 'server':
+            if command[1] == 'start': start(conn, isServerStart)
             elif isServerStart:
-                if command[7:] == 'connect': send2Client(conn, 'server is already connected')
-                elif command[7:11] == 'send': send(conn, server, command[12:])
-                elif command[7:] == 'stop': isServerStart = stop(conn, server)
-                elif command[7:] == 'disconnect': isServerStart = disconnect(conn, server, command)
+                if command[1] == 'connect': send2Client(conn, 'server is already connected')
+                elif command[1] == 'send': send(conn, server, command[2])
+                elif command[1] == 'stop': isServerStart = stop(conn, server)
+                elif command[1] == 'disconnect': isServerStart = disconnect(conn, server, command)
                 else: send2Client(conn, 'unknow command')
             else:
-                if command[7:] == 'connect': isServerStart, server = connect(conn)
-                elif command[7:] == 'disconnect' or command[7:11] == 'send' or command[7:] == 'stop': send2Client(conn, 'server did not connect')
+                if command[1] == 'connect': isServerStart, server = connect(conn)
+                elif command[1] == 'disconnect' or command[1] == 'send' or command[1] == 'stop': send2Client(conn, 'server did not connect')
                 else: send2Client(conn, 'unknow command')
 
         else:
