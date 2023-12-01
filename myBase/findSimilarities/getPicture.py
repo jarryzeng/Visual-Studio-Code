@@ -1,5 +1,6 @@
 import os
 import numpy as np
+from PIL import Image
 from pynput import keyboard
 import pyautogui
 import cv2
@@ -44,19 +45,14 @@ class main:
         width = x[1] - x[0]
         height = y[1] - y[0]
         position = (x[0], y[0], width, height)
-        self.name = "img.jpg"
 
         try:
-            img = pyautogui.screenshot("img.jpg", region=position)
-            img = np.array(img)
+            img = pyautogui.screenshot(region=position)
             screen = pyautogui.screenshot()
+            img = np.array(img)
             screen = np.array(screen)
-
-            cv2.cvtColor(img, cv2.COLOR_BGRA2GRAY)
-            cv2.cvtColor(screen, cv2.COLOR_BGRA2GRAY)
-            cv2.imshow("img", img)
-            # cv2.imshow("screen", screen)
-            cv2.waitKey(1)
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            screen = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
             cv2.imwrite(f"{self.local}screen.jpg", screen)
             cv2.imwrite(f"{self.local}img.jpg", img)
         except Exception as e:
