@@ -1,6 +1,7 @@
 import os
 import numpy as np
 from PIL import Image
+import tkinter as tk
 from pynput import keyboard
 import pyautogui
 import cv2
@@ -24,6 +25,7 @@ class main:
             self.startPosition = [x, y]
         elif key == keyboard.Key.esc:
             try:
+                # pass
                 os.remove(f"{self.local}img.jpg")
                 os.remove(f"{self.local}screen.jpg")
             except Exception as exc:
@@ -44,10 +46,10 @@ class main:
         if(y[1] < y[0]): y[1], y[0] = y[0], y[1]
         width = x[1] - x[0]
         height = y[1] - y[0]
-        position = (x[0], y[0], width, height)
+        imgPosition = (x[0], y[0], width, height)
 
         try:
-            img = pyautogui.screenshot(region=position)
+            img = pyautogui.screenshot(region=imgPosition)
             screen = pyautogui.screenshot()
             img = np.array(img)
             screen = np.array(screen)

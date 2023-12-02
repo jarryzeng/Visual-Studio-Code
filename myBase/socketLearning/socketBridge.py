@@ -10,9 +10,11 @@ def start(conn, isServerStart):
     else:
         print('opening the server')
         conn.send(b'input the server mac')
-        parame = conn.recv(1024)
-        os.system(f'python wakeOnLan.py {parame}')
-        conn.send(b'trying to opening the server')
+        parame = conn.recv(1024).decode()
+        systemRes = os.popen(f'python wakeOnLan.py {parame}').read()
+        print(f"system response:\n")
+        print(systemRes)
+        conn.send(systemRes.encode())
 
 def connect(conn):
     conn.send(b'input the destination server ip')
@@ -87,13 +89,11 @@ while isBridgeOpen:
     print(f'connected by {str(addr)}')
     while True:
         indata = conn.recv(1024)
-        command = indata.decode()
-        command = command.lower().spilt()
-        print(f'command: {command}')
-        if command[0] == 'stop' or command[0] == 'bridge stop' or command[0] == 'bridge reboot' or command[0] == '':
+        command = indata.decode().lower().split()
+        if command[0] == 'stop' or command[0] == 'bridge' or command[0] == '':
             if isServerStart: isServerStart = disconnect(conn, server, command)
             if command[0] != 'stop' and command[0] != '': isBridgeOpen = False
-            if command[0] == 'bridge reboot': wantReboot = True
+            if command[1] == 'reboot': wantReboot = True
             conn.send(b'')
             conn.close()
             print(f'client {str(addr)} closed connection.')
