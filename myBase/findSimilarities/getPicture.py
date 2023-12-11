@@ -1,7 +1,5 @@
 import os
 import numpy as np
-from PIL import Image
-import tkinter as tk
 from pynput import keyboard
 import pyautogui
 import cv2
