@@ -1,2 +1,2 @@
-FROM conda
-COPY . /
+FROM continuumio/anaconda3
+COPY . .
