@@ -80,6 +80,17 @@ s.listen(5)
 isBridgeOpen = True
 isServerStart = False
 wantReboot = False
+commandTable ='''
+1.stop - disconnect to the bridge
+2.bridge stop - turn off the bridge
+3.bridge reboot - reboot birdge
+4.server connect - connect to server
+5.server disconnect - disconnect to server
+6.server stop - turn off the server
+7.server start - open tye server
+8.server send "command" - send command to server
+every request most waiting for 10 second
+'''
 
 print(f'server start at {host}:{port}')
 print('wait for connection...')
@@ -90,31 +101,38 @@ while isBridgeOpen:
     while True:
         indata = conn.recv(1024)
         command = indata.decode().lower().split()
-        if command[0] == 'stop' or command[0] == 'bridge' or command[0] == '':
-            if isServerStart: isServerStart = disconnect(conn, server, command)
-            if command[0] != 'stop' and command[0] != '': isBridgeOpen = False
-            if command[1] == 'reboot': wantReboot = True
-            conn.send(b'')
-            conn.close()
-            print(f'client {str(addr)} closed connection.')
-            break
-        
-        elif command[0] == 'server':
-            if command[1] == 'start': start(conn, isServerStart)
-            elif isServerStart:
-                if command[1] == 'connect': send2Client(conn, 'server is already connected')
-                elif command[1] == 'send': send(conn, server, command[2])
-                elif command[1] == 'stop': isServerStart = stop(conn, server)
-                elif command[1] == 'disconnect': isServerStart = disconnect(conn, server, command)
-                else: send2Client(conn, 'unknow command')
-            else:
-                if command[1] == 'connect': isServerStart, server = connect(conn)
-                elif command[1] == 'disconnect' or command[1] == 'send' or command[1] == 'stop': send2Client(conn, 'server did not connect')
-                else: send2Client(conn, 'unknow command')
+        try:
+            if command[0] == 'stop' or command[0] == 'bridge' or command[0] == '':
+                if isServerStart: isServerStart = disconnect(conn, server, command)
+                if command[0] != 'stop' and command[0] != '': isBridgeOpen = False
+                if len(command) > 1:
+                    if command[1] == 'reboot': wantReboot = True
+                conn.send(b'')
+                conn.close()
+                print(f'client {str(addr)} closed connection.')
+                break
+            
+            elif command[0] == 'server':
+                if command[1] == 'start': start(conn, isServerStart)
+                elif isServerStart:
+                    if command[1] == 'connect': send2Client(conn, 'server is already connected')
+                    elif command[1] == 'send': send(conn, server, command[2])
+                    elif command[1] == 'stop': isServerStart = stop(conn, server)
+                    elif command[1] == 'disconnect': isServerStart = disconnect(conn, server, command)
+                    else: send2Client(conn, 'unknow command')
+                else:
+                    if command[1] == 'connect': isServerStart, server = connect(conn)
+                    elif command[1] == 'disconnect' or command[1] == 'send' or command[1] == 'stop': send2Client(conn, 'server did not connect')
+                    else: send2Client(conn, 'unknow command')
 
-        else:
-            conn.send(b'unknow command')
-            print('unknow command')
+            elif command[0] == "request":
+                if command[1] == "command": conn.send(commandTable.encode())
+            else:
+                conn.send(b'unknow command')
+                print('unknow command')
+        except Exception as exc:
+            print(exc)
+            conn.send(b"error")
 
 s.close()
 if wantReboot: os.system('bash rebootServer.sh')
