@@ -1,7 +1,7 @@
 import socket
 
-host = "10.147.20.138"
-port = 10000
+host = input("input ip: ")
+port = input("input port: ")
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.settimeout(10)
