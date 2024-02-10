@@ -2,7 +2,7 @@ import socket
 import time
 
 ip = input("input ip: ")
-port = input(int("input port: "))
+port = int(input("input port: "))
 
 while True:
   time.sleep(5)
