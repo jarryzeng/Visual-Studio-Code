@@ -1,9 +1,7 @@
 import socket
 
-host = input('input the ip:')
-while len(host.split('.')) != 4: host = input('host ip is not set 4 of number like 192.168.1.1 \ninput the ip:')
-port = int(input('input the port:'))
-while port < 0 or port > 65535: port = input('port is not a allow value \nthe value had need to between 0 to 65535 \ninput the port:')
+host = "10.147.20.138"
+port = 10000
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.settimeout(10)
