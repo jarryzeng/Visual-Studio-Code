@@ -22,12 +22,11 @@ class main:
             x, y = pyautogui.position()
             self.startPosition = [x, y]
         elif key == keyboard.Key.esc:
-            try:
-                # pass
-                os.remove(f"{self.local}img.jpg")
-                os.remove(f"{self.local}screen.jpg")
-            except Exception as exc:
-                print(exc)
+            # try:
+                # os.remove(f"{self.local}img.jpg")
+                # os.remove(f"{self.local}screen.jpg")
+            # except Exception as exc:
+                # print(exc)
             self.listen.stop()
 
     def on_release(self, key):
@@ -48,13 +47,13 @@ class main:
 
         try:
             img = pyautogui.screenshot(region=imgPosition)
-            screen = pyautogui.screenshot()
             img = np.array(img)
-            screen = np.array(screen)
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            screen = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
-            cv2.imwrite(f"{self.local}screen.jpg", screen)
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             cv2.imwrite(f"{self.local}img.jpg", img)
+            screen = pyautogui.screenshot()
+            screen = np.array(screen)
+            screen = cv2.cvtColor(screen, cv2.COLOR_BGR2RGB)
+            cv2.imwrite(f"{self.local}screen.jpg", screen)
         except Exception as e:
             print(e)
         
