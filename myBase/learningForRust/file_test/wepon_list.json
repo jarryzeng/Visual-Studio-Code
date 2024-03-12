@@ -1,0 +1,249 @@
+{
+    "wepon_list": [
+        {
+            "name": "branch",
+            "damage": 5.0,
+            "attack_delay": 1.0,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "club",
+            "damage": 20.0,
+            "attack_delay": 1.2,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "dagger",
+            "damage": 10.0,
+            "attack_delay": 0.5,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "spear",
+            "damage": 30.0,
+            "attack_delay": 0.15,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "sword",
+            "damage": 30.0,
+            "attack_delay": 1.0,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "hand axe",
+            "damage": 50.0,
+            "attack_delay": 1.5,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "air wand",
+            "damage": 15.0,
+            "attack_delay": 0.5,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "sickle",
+            "damage": 45.0,
+            "attack_delay": 1.0,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "spiked club",
+            "damage": 55.0,
+            "attack_delay": 1.2,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "glaive",
+            "damage": 50.0,
+            "attack_delay": 0.15,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "scimitar",
+            "damage": 43.0,
+            "attack_delay": 1.0,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "assassin's dagger",
+            "damage": 30.0,
+            "attack_delay": 0.55,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "shortbow",
+            "damage": 100.0,
+            "attack_delay": 1.0,
+            "accuracy": 0.8,
+            "crit": 1.0
+        },
+        {
+            "name": "battle axe",
+            "damage": 120.0,
+            "attack_delay": 1.5,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "living wood staff",
+            "damage": 40.0,
+            "attack_delay": 1.0,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "golden sword",
+            "damage": 95.0,
+            "attack_delay": 1.0,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "longbow",
+            "damage": 150.0,
+            "attack_delay": 1.0,
+            "accuracy": 0.75,
+            "crit": 1.0
+        },
+        {
+            "name": "sliver saber",
+            "damage": 80.0,
+            "attack_delay": 1.0,
+            "accuracy": 1.0,
+            "crit": 1.3
+        },
+        {
+            "name": "sliver dagger",
+            "damage": 40.0,
+            "attack_delay": 0.6,
+            "accuracy": 1.0,
+            "crit": 1.3
+        },
+        {
+            "name": "sliver axe",
+            "damage": 170.0,
+            "attack_delay": 1.5,
+            "accuracy": 1.0,
+            "crit": 1.3
+        },
+        {
+            "name": "sliver staff",
+            "damage": 55.0,
+            "attack_delay": 1.0,
+            "accuracy": 1.0,
+            "crit": 1.3
+        },
+        {
+            "name": "thunder whip",
+            "damage": 50.0,
+            "attack_delay": 0.25,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "thunder trident",
+            "damage": 125.0,
+            "attack_delay": 0.15,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "broad sword",
+            "damage": 160.0,
+            "attack_delay": 1.0,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "morningstar",
+            "damage": 240.0,
+            "attack_delay": 1.5,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "golden scythe",
+            "damage": 190.0,
+            "attack_delay": 1.0,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "star wand",
+            "damage": 40.0,
+            "attack_delay": 1.0,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "shuriken of wind",
+            "damage": 110.0,
+            "attack_delay": 0.6,
+            "accuracy": 0.8,
+            "crit": 1.0
+        },
+        {
+            "name": "searing sword",
+            "damage": 346.0,
+            "attack_delay": 1.0,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "poisonous axe",
+            "damage": 200.0,
+            "attack_delay": 1.5,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "bone bow",
+            "damage": 450.0,
+            "attack_delay": 1.0,
+            "accuracy": 0.7,
+            "crit": 1.0
+        },
+        {
+            "name": "bone staff",
+            "damage": 60.0,
+            "attack_delay": 1.0,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "vampiric spear",
+            "damage": 135.0,
+            "attack_delay": 0.15,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "sword of death",
+            "damage": 500.0,
+            "attack_delay": 1.0,
+            "accuracy": 1.0,
+            "crit": 1.0
+        },
+        {
+            "name": "whip of the lich",
+            "damage": 300,
+            "attack_delay": 0.25,
+            "accuracy": 1.0,
+            "crit": 1.0
+        }
+    ]
+}

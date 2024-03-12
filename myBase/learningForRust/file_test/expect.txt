@@ -1,0 +1,35 @@
+branch              : 10.19
+club                : 11.75
+dagger              : 19.97
+spear               : 16.78
+sword               : 15.19
+hand axe            : 16.3
+air wand            : 20.97
+sickle              : 18.19
+spiked club         : 18.75
+glaive              : 20.78
+scimitar            : 17.79
+assassin's dagger   : 25.85
+shortbow            : 29.13
+battle axe          : 30.3
+living wood staff   : 17.19
+golden sword        : 28.19
+longbow             : 39.12
+sliver saber        : 25.25
+sliver dagger       : 30.51
+sliver axe          : 40.36
+sliver staff        : 20.25
+thunder whip        : 22.11
+thunder trident     : 35.78
+broad sword         : 41.19
+morningstar         : 54.3
+golden scythe       : 47.19
+star wand           : 17.19
+shuriken of wind    : 44.39
+searing sword       : 78.39
+poisonous axe       : 46.3
+bone bow            : 99.1
+bone staff          : 21.19
+vampiric spear      : 37.78
+sword of death      : 109.19
+whip of the lich    : 72.11
